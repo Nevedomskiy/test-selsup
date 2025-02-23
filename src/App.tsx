@@ -79,11 +79,32 @@ const ParamEditor: React.FC<Props> = ({ params, model }) => {
 				<div key={param.id}>
 					<label>
 						{param.name}:
-						<input
-							type='text'
-							value={paramValues[param.id] || ''}
-							onChange={e => handleChange(param.id, e.target.value)}
-						/>
+						{/* Закладываю возможность расширения по типу параметра 'string' */}
+						{param.type === 'string' && (
+							<input
+								type='text'
+								value={paramValues[param.id] || ''}
+								onChange={e => handleChange(param.id, e.target.value)}
+							/>
+						)}
+						{/* Закладываю возможность расширения по типу параметра 'number' */}
+						{param.type === 'number' && (
+							<input
+								type='number'
+								value={paramValues[param.id] || ''}
+								onChange={e => handleChange(param.id, e.target.value)}
+							/>
+						)}
+						{/* Закладываю возможность расширения по типу параметра 'select' */}
+						{param.type === 'select' && (
+							<select
+								value={paramValues[param.id] || ''}
+								onChange={e => handleChange(param.id, e.target.value)}
+							>
+								<option value='option1'>Option 1</option>
+								<option value='option2'>Option 2</option>
+							</select>
+						)}
 					</label>
 				</div>
 			))}
