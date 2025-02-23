@@ -16,7 +16,7 @@ interface ParamValue {
 
 interface Model {
 	paramValues: ParamValue[]
-	colors: string[] // Предполагаем, что цвета - это массив строк
+	colors: string[]
 }
 
 interface Props {
@@ -74,32 +74,34 @@ const ParamEditor: React.FC<Props> = ({ params, model }) => {
 
 	return (
 		<form onSubmit={e => console.log(getModel(e))}>
+			{/* возвращаю данные модели в консоль для удобства */}
 			<h2>Редактирование параметров товара</h2>
-			{params.map(param => (
-				<div key={param.id}>
+			{/* type необязательный параметр, поэтому записываем стандартное значение */}
+			{params.map(({ id, name, type = 'string' }) => (
+				<div key={id}>
 					<label>
-						{param.name}:
+						{name}:
 						{/* Закладываю возможность расширения по типу параметра 'string' */}
-						{param.type === 'string' && (
+						{type === 'string' && (
 							<input
 								type='text'
-								value={paramValues[param.id] || ''}
-								onChange={e => handleChange(param.id, e.target.value)}
+								value={paramValues[id] || ''}
+								onChange={e => handleChange(id, e.target.value)}
 							/>
 						)}
 						{/* Закладываю возможность расширения по типу параметра 'number' */}
-						{param.type === 'number' && (
+						{type === 'number' && (
 							<input
 								type='number'
-								value={paramValues[param.id] || ''}
-								onChange={e => handleChange(param.id, e.target.value)}
+								value={paramValues[id] || ''}
+								onChange={e => handleChange(id, e.target.value)}
 							/>
 						)}
 						{/* Закладываю возможность расширения по типу параметра 'select' */}
-						{param.type === 'select' && (
+						{type === 'select' && (
 							<select
-								value={paramValues[param.id] || ''}
-								onChange={e => handleChange(param.id, e.target.value)}
+								value={paramValues[id] || ''}
+								onChange={e => handleChange(id, e.target.value)}
 							>
 								<option value='option1'>Option 1</option>
 								<option value='option2'>Option 2</option>
@@ -108,6 +110,7 @@ const ParamEditor: React.FC<Props> = ({ params, model }) => {
 					</label>
 				</div>
 			))}
+			{/* Добавил функционал выбора цветов из перечня модели */}
 			{model.colors.map(color => (
 				<div key={color}>
 					<label>
